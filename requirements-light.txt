@@ -1,0 +1,40 @@
+# =============================================================================
+# requirements-light.txt  —  the "light path" Python stack (CPU, runs anywhere)
+# =============================================================================
+# These are PINNED to versions verified working on macOS arm64 (Apple Silicon)
+# with Python 3.11, the kernel this project is built against. They cover the
+# foundation notebooks and every notebook's CPU/fallback path:
+#   00 environment check, 01 RDKit foundations, 02 target structure,
+#   03 pockets (viz), 08 capstone (with precomputed data/).
+#
+# Install (see docs/SETUP.md for the full beginner walk-through):
+#   python3.11 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements-light.txt
+#
+# NOT in this file (installed per-stage as you reach the notebook, because each
+# pulls in heavy deps and is verified at that phase — see docs/SETUP.md):
+#   - meeko        -> notebook 04 (prepares ligands for AutoDock Vina)
+#   - admet-ai     -> notebook 07 (pulls CPU torch + chemprop; large download)
+# And the NON-pip standalone tools (binaries / Java), also in docs/SETUP.md:
+#   - AutoDock Vina (binary, `brew install autodock-vina`)
+#   - fpocket       (binary, `brew install fpocket`)
+#   - P2Rank        (Java app + a JRE, `brew install openjdk`)
+#   - Boltz-2       (GPU; notebook 05 uses precomputed data/ on the light path)
+# -----------------------------------------------------------------------------
+
+# --- cheminformatics core (every notebook) ---
+rdkit==2026.3.3
+
+# --- data + numerics ---
+numpy==2.4.6
+pandas==3.0.3
+
+# --- plotting + 3D molecular/structure visualization ---
+matplotlib==3.11.0
+py3Dmol==2.5.5
+pillow==12.2.0
+
+# --- Jupyter (the notebook runtime + kernel + headless execution) ---
+jupyterlab==4.6.0
+ipykernel==7.3.0
+nbconvert==7.17.1

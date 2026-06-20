@@ -1,0 +1,63 @@
+# =============================================================================
+# environment.yml  —  the "full path" conda environment (GPU / deep models)
+# =============================================================================
+# Use this ONLY if you have a Linux machine with an NVIDIA GPU + CUDA. It adds
+# the heavy deep-learning stages that the light path runs from precomputed
+# data/ instead:
+#   - notebook 05: Boltz-2 (joint structure + binding-affinity cofolding)
+#   - notebook 06: REINVENT 4 (generative design, at speed)
+#
+# On a Mac (no NVIDIA GPU) you CANNOT run these locally. Two options:
+#   1. Stay on the light path (requirements-light.txt) and use the precomputed
+#      outputs in data/ — the concepts are fully learnable this way.
+#   2. Run notebooks 05 and 06 on Google Colab (free/cheap GPU). See docs/SETUP.md
+#      "Colab path" for the exact setup cells.
+#
+# Create / activate:
+#   conda env create -f environment.yml
+#   conda activate psychedelic-pipeline
+#   python -m ipykernel install --user --name psychedelic-pipeline
+#
+# NOTE: GPU/CUDA pinning is hardware-specific. The pytorch line below targets
+# CUDA 12.1; change `pytorch-cuda` to match your driver, or follow the current
+# install command at https://pytorch.org/ if resolution fails.
+# -----------------------------------------------------------------------------
+name: psychedelic-pipeline
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+
+  # --- the entire light-path stack (so one env does everything) ---
+  - rdkit=2026.3.3
+  - numpy=2.4.6
+  - pandas=3.0.3
+  - matplotlib=3.11.0
+  - py3dmol=2.5.5
+  - pillow
+  - jupyterlab=4.6.0
+  - ipykernel
+  - nbconvert
+
+  # --- standalone discovery tools (conda-forge / bioconda binaries) ---
+  - openjdk          # JRE for P2Rank (notebook 03)
+  - fpocket          # geometric pocket detection (notebook 03)
+  - vina             # AutoDock Vina (notebook 04)
+
+  # --- deep-learning runtime (GPU) ---
+  - pytorch::pytorch>=2.2
+  - pytorch::pytorch-cuda=12.1
+
+  # --- pip-only packages (heavy stages + helpers) ---
+  - pip
+  - pip:
+      - meeko            # ligand prep for Vina (notebook 04)
+      - admet-ai         # ADMET/safety prediction (notebook 07)
+      - boltz            # Boltz-2 cofolding + affinity (notebook 05)
+      # REINVENT 4 (notebook 06): install from source per its README —
+      #   pip install reinvent4
+      # (kept as a comment because the package name/version moves; pin once you
+      #  confirm the current release on your GPU box.)

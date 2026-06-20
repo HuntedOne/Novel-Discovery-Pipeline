@@ -1,0 +1,24 @@
+# Python virtual environment (recreate with requirements-light.txt)
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# OS cruft
+.DS_Store
+
+# Large downloaded model weights / structures (regenerate or re-download)
+*.pt
+*.ckpt
+data/*.pdb
+data/*.cif
+
+# but DO keep the small precomputed fallbacks the light path depends on:
+!data/*.csv
+!data/*.json
